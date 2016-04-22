@@ -1,0 +1,29 @@
+<!-- modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="booking details" ng-controller="ModalCtrl">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h4 class="modal-title">Réservation #{{selectedBooking.id}}</h4>
+		    faite le <strong>{{selectedBooking.dateReservation | date:'dd MMMM yyyy'}}</strong>
+		    via <a href="{{channels[selectedBooking.channel].url}}">{{channels[selectedBooking.channel].text}}</a>
+		  </div>
+		  <div class="modal-body">
+		    <p><strong>Chambre : </strong> {{rooms[selectedBooking.room].name}}  </p>
+			<p><strong>Nom : </strong> {{selectedBooking.name}} </p>
+			<p><strong>Adresse e-mail : </strong> {{selectedBooking.email}} </p>
+			<p><strong>N° de téléphone :</strong> {{selectedBooking.telephone}} </p>
+			<p><strong>Nombre de personnes :</strong> {{selectedBooking.guestsNumber}} </p>
+			<p><strong>Date arrivée :</strong> {{selectedBooking.dateIn | date:'EEEE dd MMMM yyyy'}} </p>
+			<p><strong>Date départ :</strong> {{selectedBooking.dateOut | date:'EEEE dd MMMM yyyy'}} </p>
+			<p><strong>Statut :</strong> {{statuses[selectedBooking.status].text}} </p>
+			<p><strong>Notes :</strong> {{selectedBooking.notes}} </p>		
+		  </div>
+		  <div class="modal-footer">
+		  	  <button type="button" data-dismiss="modal" class="btn btn-primary" ng-click="goToUpdateBooking(selectedBooking.id)">Modifier</button>
+        	  <button type="button" data-dismiss="modal" class="btn btn-danger" ng-click="deleteBooking(selectedBooking.id)">Supprimer</button>
+		      <button type="button" data-dismiss="modal" class="btn btn-default">Fermer</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

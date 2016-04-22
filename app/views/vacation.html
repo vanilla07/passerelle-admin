@@ -1,0 +1,58 @@
+<ng-include src="modalTemplate" ng-if="!isUpdate"></ng-include>
+
+<div class="row" ng-if="isUpdate">
+	<div class="row row-center">
+		<ol class="breadcrumb">
+		  <li><a ui-sref="app">Accueil</a></li>
+		  <li><a ui-sref="app.vacation.add">Fermetures</a></li>
+		  <li class="active">Modifier des dates de fermeture</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row">
+	<div class="row row-center">
+		<h1>{{rowTitle}}</h1>
+		<div class="col-xs-8 col-xs-offset-2">
+			<div ui-view ng-controller="VacationCtrl"></div>		
+		</div>
+	</div>
+</div>
+
+<div class="row"><div ng-include="calendarsTemplate" class="row row-center"></div></div>
+
+<div class="row" ng-if="!isUpdate">
+	<div class="row row-center">
+		<h1>Fermetures</h1>
+    	<!-- <ul class="nav nav-tabs" >
+    		<li role="presentation" ng-class="{active:isSelected('all')}">
+            	<a ng-click="select('all')" aria-controls="all" role="tab">Toutes les fermetures</a>
+            </li>
+            <li role="presentation" ng-class="{active:isSelected(room.id)}" ng-repeat="room in rooms">
+            	<a ng-click="select(room.id)" aria-controls="{{room.name}}" role="tab">{{room.name}} </a>
+            </li>
+        </ul> -->
+        <div class="tab-content">
+        	<br/>
+	        <div>
+	        	<table class="table table-striped table-bordered table-hover">
+  					<tr>
+				    	<th ng-click="sortVacationBy('id')" class="sorting-hover"> <i class="fa fa-sort"></i> Fermeture n°</th>
+				    	<th>Chambre(s)</th>
+				    	<th ng-click="sortVacationBy('name')" class="sorting-hover"> <i class="fa fa-sort"></i> Libellé</th>
+				    	<th ng-click="sortVacationBy('dateIn')" class="sorting-hover"> <i class="fa fa-sort"></i> Dates de fermeture</th>
+				  	</tr>
+				  	<tr ng-repeat="vacation in vacations | orderBy:sort:reverseSort"
+				  		data-toggle="modal" data-target="#myModal" ng-click="setSelectedVacation(vacation)">
+				    	<td><strong>{{vacation.id}}</strong></td>
+				    	<td><span class="badge" ng-repeat="r in vacation.rooms">{{rooms[r.room].name}}</span> </td>
+				    	<td>{{vacation.name}}</td>
+				    	<td>Du <strong>{{vacation.dateStart | date:'dd MMMM yyyy'}}</strong> au 
+				    		<strong>{{vacation.dateEnd | date:'dd MMMM yyyy'}}</strong></td> 
+				  	</tr>
+				</table>
+	        </div>
+    	</div>
+    </div>
+</div>   
+  

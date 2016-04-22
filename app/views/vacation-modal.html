@@ -1,0 +1,23 @@
+<!-- modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="Vacation details" ng-controller="ModalCtrl">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h4 class="modal-title">Fermeture #{{selectedVacation.id}}</h4>
+		  </div>
+		  <div class="modal-body">
+		    <p><strong>Chambre(s) : </strong> <span class="badge" ng-repeat="r in selectedVacation.rooms">{{rooms[r.room].name}}</span></p>
+			<p><strong>Libellé : </strong> {{selectedVacation.name}} </p>
+			<p><strong>Date de fermeture :</strong> {{selectedVacation.dateStart | date:'EEEE dd MMMM yyyy'}} </p>
+			<p><strong>Date de rouverture :</strong> {{selectedVacation.dateEnd | date:'EEEE dd MMMM yyyy'}} </p>
+			<p><strong>Description :</strong> {{selectedVacation.name}}</p>	
+		  </div>
+		  <div class="modal-footer">
+		  	  <button type="button" data-dismiss="modal" class="btn btn-primary" ng-click="goToUpdateVacation(selectedVacation.id)">Modifier</button>
+        	  <button type="button" data-dismiss="modal" class="btn btn-danger" ng-click="deleteVacation(selectedVacation.id)">Supprimer</button>
+		      <button type="button" data-dismiss="modal" class="btn btn-default">Fermer</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

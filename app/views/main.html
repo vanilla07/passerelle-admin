@@ -1,0 +1,53 @@
+<ng-include src="modalTemplate"></ng-include>
+<div class="jumbotron">
+  <p class="lead">
+    <img src="images/logo-fr.png" alt="Logo la Passerelle des Corton"><br>  
+  </p>
+  <h3>Bienvenue dans l'espace administration !</h3>
+  <div class="row">  
+    <h4><strong>Prochains clients :</strong></h4>
+    
+    <div class="col-sm-4 next-res" ng-repeat="next in nextBookings"> 
+      <div class="res-empty" ng-if="next.isEmpty">
+        <h4>Chambre <strong>{{next.roomName}} :</strong></h4>
+        <p><strong>Pas de réservation prochainement.</strong></p>
+      </div>
+      <div ng-if="!next.isEmpty">
+        <h4>Chambre <strong>{{getRoomName(rooms, next.room)}} :</strong></h4>
+        <div class="col-xs-4">
+          <time datetime="{{next.dateIn}}" class="icon"> 
+            <em>{{next.dateIn | date:'EEEE'}}</em>
+            <strong>{{next.dateIn | date:'MMM'}}</strong>
+            <span>{{next.dateIn | date:'d'}}</span>
+          </time>
+        </div>
+        <div class="col-xs-8">
+          <p><b>{{next.name}} :</b> <br/> {{next.guestsNumber}} personne(s), 
+            <strong>{{ next.dateOut | amDifference : next.dateIn : 'days' }} nuit(s).</strong></p>
+          <button type="button" ng-click="selectBooking(next.id)" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModal">consulter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row marketing">
+
+  <div class="row row-dashboard">
+    <h3>Gérer les réservations</h3>
+    <p>
+      Administrer les réservations, rechercher un client, consulter le calendrier.
+      <a class="btn btn-success" ui-sref="app.bookings.add">Réservations</a>
+    </p>
+  </div>
+
+  <div class="row row-dashboard">
+    <h3>Gérer les jours de fermeture</h3>
+    <p> 
+      Gérer la fermeture temporaire d'une ou plusieurs chambres, consulter le calendrier de fermeture. 
+      <a class="btn btn-success" ui-sref="app.vacation.add">Fermetures</a></button>
+    </p>
+  </div>
+
+</div>

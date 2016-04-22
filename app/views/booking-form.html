@@ -1,0 +1,148 @@
+<div class="panel panel-default" >
+    <div class="panel-heading">
+      <h2 class="panel-title">{{formTitle}}</h2>
+    </div>
+    <div class="panel-body">
+        <div class="row col-sm-10 col-sm-offset-1">
+            <form class="form-horizontal" name="bookForm" ng-submit="book()" novalidate id="bookingForm">
+                
+                <div class="form-group">
+                    <label for="room" class="col-sm-5 control-label">Chambre *</label>
+                    <div class="col-sm-7">
+                        <md-input-container class="input">
+        			        <md-select ng-model="booking.room" required aria-label="book a room" name="room" ng-change="updateAvailability()">
+        			          <md-option ng-repeat="room in rooms" value="{{room.id}}">
+        			            {{room.name}}
+        			          </md-option>
+        			        </md-select>
+        			    </md-input-container>
+        			    <div class="validation-messages" ng-messages="bookForm.room.$error" role="alert" ng-if="bookForm.$dirty">
+        	              	<div ng-message="required"><i class="fa fa-exclamation-triangle"></i> Veuillez choisir une chambre.</div>
+        	            </div>
+        	        </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="col-sm-5 control-label">Nom *</label>
+                    <div class="col-sm-7">
+                    	<md-input-container class="input">
+        			        <input type="text" id="name" name="name" ng-model="booking.name" required md-maxlength="50" aria-label="your name">
+        			     </md-input-container>
+                        <div class="validation-messages" ng-messages="bookForm.name.$error" role="alert" ng-if="bookForm.name.$dirty">
+        	              	<div ng-message="required"><i class="fa fa-exclamation-triangle"></i> Veuillez entrer votre nom.</div>
+        	              	<div ng-message="md-maxlength"><i class="fa fa-exclamation-triangle"></i> Le nom entré est trop long.</div>
+        	            </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="col-sm-5 control-label">Adresse e-mail *</label>
+                    <div class="col-sm-7">
+                    	<md-input-container class="input">
+                    		<input ng-model="booking.email" type="email" id="email" name="email" required md-maxlength="50" aria-label="Your email address">
+        			    </md-input-container>
+                        <div class="validation-messages" ng-messages="bookForm.email.$error" role="alert" ng-if="bookForm.email.$dirty">
+        	              	<div ng-message="required"><i class="fa fa-exclamation-triangle"></i> Veuillez entrer votre adresse e-mail.</div>
+        	              	<div ng-message="email"><i class="fa fa-exclamation-triangle"></i> Veuillez entrer une adresse e-mail valide.</div>
+        	              	<div ng-message="md-maxlength"><i class="fa fa-exclamation-triangle"></i> L'adresse e-mail entrée est trop longue.</div>
+        	            </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="telephone" class="col-sm-5 control-label">N° de téléphone </label>
+                    <div class="col-sm-7">
+                        <md-input-container class="input">
+                            <input type="text" id="telephone" name="telephone" ng-model="booking.telephone" md-maxlength="50" aria-label="your phone number">
+                         </md-input-container>
+                        <div class="validation-messages" ng-messages="bookForm.telephone.$error" role="alert" ng-if="bookForm.telephone.$dirty">
+                            <div ng-message="md-maxlength"><i class="fa fa-exclamation-triangle"></i> Le numéro entré est trop long.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="guestsNumber" class="col-sm-5 control-label">Nombre de personnes</label>
+                    
+                    <div class="col-sm-7">
+                        <md-radio-group ng-model="booking.guestsNumber" class="md-primary" aria-label="number of guests">
+        			      <md-radio-button value="1"> 1 personne </md-radio-button>
+        			      <md-radio-button value="2"> 2 personnes </md-radio-button>
+        			    </md-radio-group> 
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dateIn" class="col-sm-5 control-label">Date d'arrivée *</label>
+                    <div class="col-sm-7">
+                        <md-datepicker ng-model="booking.dateIn" md-placeholder="Entrez une date" required md-min-date="minDate" name="dateIn" ng-change="onChangeDateStart()"></md-datepicker>
+                        <div class="validation-messages" ng-messages="bookForm.dateIn.$error" role="alert">
+        			        <div ng-message="valid"><i class="fa fa-exclamation-triangle"></i> Veuillez entrer une date valide ("jj/mm/aaaa")</div>
+        			        <div ng-message="required"><i class="fa fa-exclamation-triangle"></i> Ce champ date est obligatoire</div>
+        			        <div ng-message="mindate"><i class="fa fa-exclamation-triangle"></i> Cette date n'est pas disponible</div>
+        		      	</div>
+                        <div class="validation-messages" role="alert" ng-hide="hideAvailibilityMsg">
+                            <div><i class="fa fa-exclamation-triangle"></i> La chambre {{roomName}} n'est pas disponible à ces dates</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dateOut" class="col-sm-5 control-label">Date de départ *</label>
+                    <div class="col-sm-7">
+                        <md-datepicker ng-model="booking.dateOut" md-placeholder="Entrez une date" required md-min-date="minDateOut" name="dateOut" md-max-date="maxDateOut" ng-change="updateAvailability()"></md-datepicker>
+                        <div class="validation-messages" ng-messages="bookForm.dateOut.$error" role="alert">
+        			        <div ng-message="valid"><i class="fa fa-exclamation-triangle"></i> Veuillez entrer une date valide ("jj/mm/aaaa")</div>
+        			        <div ng-message="required"><i class="fa fa-exclamation-triangle"></i> Ce champ date est obligatoire</div>
+        			        <div ng-message="mindate"><i class="fa fa-exclamation-triangle"></i> Cette date n'est pas disponible</div>
+                            <div ng-message="maxdate"><i class="fa fa-exclamation-triangle"></i> Séjour trop long </div>
+        		      	</div>
+                        <div class="validation-messages" role="alert" ng-hide="hideAvailibilityMsg">
+                            <div><i class="fa fa-exclamation-triangle"></i> La chambre {{roomName}} n'est pas disponible à ces dates</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes" class="col-sm-5 control-label">Commentaire </label>
+                    <div class="col-sm-7">
+                    	<md-input-container class="md-block input">
+        		          <textarea ng-model="booking.notes" columns="1" md-maxlength="200" id="notes" rows="6" name="notes" aria-label="Write a comment"></textarea>
+        		        </md-input-container>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="room" class="col-sm-5 control-label">Statut</label>
+                    <div class="col-sm-7">
+                        <md-input-container class="input">
+        			        <md-select ng-model="booking.status" required aria-label="booking status" name="status">
+        			          <md-option ng-repeat="status in statuses" value="{{status.value}}">
+        			            {{status.text}}
+        			          </md-option>
+        			        </md-select>
+        			    </md-input-container>
+        	        </div>
+                </div>
+                <div class="form-group">
+                    <label for="room" class="col-sm-5 control-label">Canal de réservation</label>
+                    <div class="col-sm-7">
+                        <md-input-container class="input">
+        			        <md-select ng-model="booking.channel" required aria-label="booking channel" name="channel">
+        			          <md-option ng-repeat="channel in channels" value="{{channel.id}}">
+        			            {{channel.text}}
+        			          </md-option>
+        			        </md-select>
+        			    </md-input-container>
+        	        </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-5 col-sm-7">
+                        <button type="submit" class="btn btn-primary" ng-disabled="bookForm.$invalid || !hideAvailibilityMsg">Ajouter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
